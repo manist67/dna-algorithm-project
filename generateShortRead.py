@@ -26,7 +26,7 @@ if __name__ == "__main__":
     for i in range(0, shortCount):
         index = random.randint(0, targetLength - shortLength - 1)
         shortRead = targetString[index: index+shortLength]
-        destFile.write(shortRead)
+        destFile.write(shortRead + '\n')
 
     targetFile.close()
     destFile.close()
