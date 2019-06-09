@@ -1,3 +1,5 @@
+import time
+
 def bruteforce(shortread, originDNA, missmatch=3):
     originLength = len(originDNA)
     shortreadLength = len(shortread)
@@ -61,9 +63,32 @@ def compareDNA(originDNA, assemblyDNA):
     print("matched count : " + str(matchCount))
     print("match rate : " + str(matchCount / originLength))
 
+class Timer:
+    time = None
+
+    def start(self):
+        if self.time:
+            raise Exception("already run")
+
+        self.time = time.time()
+    
+    def finish(self):
+        if not self.time:
+            raise Exception("not started")
+
+        executeTime = time.time() - self.time
+        self.time = None
+        return executeTime
+
 if __name__ == "__main__":
     shortreads = readShortSequence("short_read.txt")
     originDNA = readOriginDNA("origin_dna.txt")
+
+    timer = Timer()
+    timer.start()
     assemblyDNA = assembly(shortreads, originDNA)
+    runtime = timer.finish()
+
     writeDNA(assemblyDNA, "assembly_dna.txt")
     compareDNA(originDNA, assemblyDNA)
+    print("execute time : " + str(runtime))
