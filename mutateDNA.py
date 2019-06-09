@@ -22,7 +22,7 @@ if __name__ == "__main__":
 
     for i in range(0, mutationLength):
         index = random.randint(0, DNALength)
-        mutateOrigin = originDNA[index]
+        mutateOrigin = originDNA[index - 1]
         mutateTo = random.choice('ACGT'.replace(mutateOrigin, ''))
         mutateDNA = "".join((mutateDNA[:index-1], mutateTo, mutateDNA[index:]))
 
