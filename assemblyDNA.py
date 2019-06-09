@@ -21,9 +21,29 @@ def bruteforce(shortread, originDNA, missmatch=3):
 
     return None
 
-def kmp(originDNA):
-    def resultFunction(shortread, originDNA):
-        return None
+def kmp():
+    def partial(pattern):
+        ret = [0]
+
+        for i in range(1, len(pattern)):
+            j = ret[i-1]
+            while j > 0 and pattern[j] != pattern[i]:
+                j = ret[j-1]
+            ret.append(j + 1 if pattern[j] == pattern[i] else j)
+        return ret
+    
+    def resultFunction(shortread, originDNA, mismatch):
+        part, result, j = partial(shortread), [], 0
+
+        for i in range(len(originDNA)):
+            while j > 0 and originDNA[i] != shortread[j]:
+                j = part[j - 1]
+            if originDNA[i] == shortread[j]: j += 1
+            if j == len(shortread): 
+                result = i - (j - 1) 
+                break
+
+        return result
 
     return resultFunction
 
