@@ -1,17 +1,17 @@
 import time
 
-def bruteforce(shortread, originDNA, missmatch=3):
+def bruteforce(shortread, originDNA, mismatch=3):
     originLength = len(originDNA)
     shortreadLength = len(shortread)
 
     for i in range(0, originLength - shortreadLength):
-        _missmatch = 0
+        _mismatch = 0
         isMathched = True
         for j in range(0, len(shortread)):
             if originDNA[i+j] == shortread[j]:
                 continue
-            elif originDNA[i+j] != shortread[j] and _missmatch < missmatch:
-                _missmatch = _missmatch + 1
+            elif originDNA[i+j] != shortread[j] and _mismatch < mismatch:
+                _mismatch = _mismatch + 1
             else:
                 isMathched = False
                 break
