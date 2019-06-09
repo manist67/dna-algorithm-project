@@ -72,27 +72,28 @@ def compareDNA(originDNA, assemblyDNA):
 class Timer:
     time = None
 
-    def start(self):
-        if self.time:
+    @staticmethod
+    def start():
+        if Timer.time:
             raise Exception("already run")
 
-        self.time = time.time()
+        Timer.time = time.time()
     
-    def finish(self):
-        if not self.time:
+    @staticmethod
+    def finish():
+        if not Timer.time:
             raise Exception("not started")
 
-        executeTime = time.time() - self.time
-        self.time = None
+        executeTime = time.time() - Timer.time
+        Timer.time = None
         return executeTime
-if __name__ == "__main__":
-    timer = Timer()
 
+if __name__ == "__main__":
     shortreads = readShortSequence("short_read.txt")
     originDNA = readOriginDNA("origin_dna.txt")
-    timer.start()
+    Timer.start()
     assemblyDNA = assembly(shortreads, originDNA)
-    runtime = timer.finish()
+    runtime = Timer.finish()
     writeDNA(assemblyDNA, "assembly_dna.txt")
     compareDNA(originDNA, assemblyDNA)
     print("execute time : " + str(runtime))
