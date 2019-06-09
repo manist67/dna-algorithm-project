@@ -19,6 +19,12 @@ def bruteforce(shortread, originDNA, missmatch=3):
 
     return None
 
+def kmp(originDNA):
+    def resultFunction(shortread, originDNA):
+        return None
+
+    return resultFunction
+
 def readShortSequence(filename):
     file = open(filename, 'r')
     shortreads = file.read().splitlines()
@@ -61,9 +67,10 @@ def compareDNA(originDNA, assemblyDNA):
     print("matched count : " + str(matchCount))
     print("match rate : " + str(matchCount / originLength))
 
+
 if __name__ == "__main__":
     shortreads = readShortSequence("short_read.txt")
     originDNA = readOriginDNA("origin_dna.txt")
-    assemblyDNA = assembly(shortreads, originDNA)
+    assemblyDNA = assembly(shortreads, originDNA, kmp(originDNA))
     writeDNA(assemblyDNA, "assembly_dna.txt")
     compareDNA(originDNA, assemblyDNA)
