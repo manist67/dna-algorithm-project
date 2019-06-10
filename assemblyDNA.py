@@ -21,6 +21,46 @@ def bruteforce(shortread, originDNA, mismatch=3):
 
     return None
 
+def bm():
+    def acgt(char):
+        if char == "A":
+            return 0
+        elif char == "C":
+            return 1
+        elif char == "G":
+            return 2
+        else:
+            return 3
+
+    def badCharHeuristic(string, size): 
+        badChar = [-1]*4 
+    
+        for i in range(size): 
+            badChar[acgt(string[i])] = i; 
+    
+        return badChar 
+    
+    def search(shortRead, originDNA, mismatch=3): 
+        m = len(shortRead) 
+        n = len(originDNA) 
+
+        badChar = badCharHeuristic(shortRead, m)  
+
+        s = 0
+        while(s <= n-m): 
+            j = m-1
+
+            while j>=0 and shortRead[j] == originDNA[s+j]:
+                j -= 1
+
+            if j<0: 
+                return s
+            else: 
+                s += max(1, j-badChar[acgt(originDNA[s+j])]) 
+
+    return search
+
+
 def kmp():
     def partial(pattern):
         ret = [0]
@@ -32,7 +72,7 @@ def kmp():
             ret.append(j + 1 if pattern[j] == pattern[i] else j)
         return ret
     
-    def resultFunction(shortread, originDNA, mismatch):
+    def resultFunction(shortread, originDNA, mismatch=3):
         part, result, j = partial(shortread), [], 0
 
         for i in range(len(originDNA)):
@@ -112,7 +152,7 @@ if __name__ == "__main__":
     shortreads = readShortSequence("short_read.txt")
     originDNA = readOriginDNA("origin_dna.txt")
     Timer.start()
-    assemblyDNA = assembly(shortreads, originDNA)
+    assemblyDNA = assembly(shortreads, originDNA, bm())
     runtime = Timer.finish()
     writeDNA(assemblyDNA, "assembly_dna.txt")
     compareDNA(originDNA, assemblyDNA)
