@@ -3,7 +3,7 @@ import random
 
 if __name__ == "__main__":
     originFileName = "origin_dna.txt"
-    mutationRate = 0.01
+    mutationRate = 0.05
 
     argvLength = len(sys.argv)
     if argvLength >= 2:

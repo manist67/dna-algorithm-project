@@ -1,4 +1,39 @@
 import time
+def bitap(pattern, text, mismatch=3):
+    m = len(pattern)
+    S_table = {
+        'A': 0,
+        'C': 0,
+        'G': 0,
+        'T': 0
+    }
+
+    for i, c in enumerate(pattern):
+        S_table[c] |= 1 << i
+    # 테이블 생성 for masking
+
+    R0 = 0
+    R1 = 0
+    R2 = 0
+    mask = 1 << (m - 1) 
+
+    j = 0
+    while j < len(text):
+        c = text[j]
+        j+=1
+
+        S = S_table[c] # 해당 문자에 대한 pattern 마스킹 숫자 가져옴
+        shR0 = (R0 << 1) | 1 # 이전 text에 대한 정보들 + 현재 정보를 갖기위한 마스킹
+        R0 = shR0 & S 
+        R1 = ((R1 << 1) | 1) & S | shR0 
+        R2 = ((R2 << 2) | 3) & S | shR0
+
+        if R0 & mask: # exact match
+            return j - m
+        elif R1 & mask: # match with one substitution
+            return j - m
+        elif R2 & mask: # match with two substitutions
+            return j - m
 
 def bruteforce(shortread, originDNA, mismatch=3):
     originLength = len(originDNA)
@@ -125,7 +160,7 @@ def compareDNA(originDNA, assemblyDNA):
             matchCount = matchCount + 1
 
     print("origin length : " + str(originLength))
-    print("aseembly legnth : " + str(assemblyLength))
+    print("assembly legnth : " + str(assemblyLength))
     print("matched count : " + str(matchCount))
     print("match rate : " + str(matchCount / originLength))
 
@@ -152,7 +187,7 @@ if __name__ == "__main__":
     shortreads = readShortSequence("short_read.txt")
     originDNA = readOriginDNA("origin_dna.txt")
     Timer.start()
-    assemblyDNA = assembly(shortreads, originDNA, bm())
+    assemblyDNA = assembly(shortreads, originDNA, kmp())
     runtime = Timer.finish()
     writeDNA(assemblyDNA, "assembly_dna.txt")
     compareDNA(originDNA, assemblyDNA)

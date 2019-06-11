@@ -4,8 +4,8 @@ import random
 if __name__ == "__main__":
     targetFileName = "mutate_dna.txt"
     destFileName = "short_read.txt"
-    shortLength = 50
-    shortCount = 200
+    shortLength = 25
+    shortCount = 2000
 
     argvLength = len(sys.argv)
     if argvLength >= 2:
